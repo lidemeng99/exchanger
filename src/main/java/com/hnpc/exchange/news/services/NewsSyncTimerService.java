@@ -16,13 +16,12 @@ import com.hnpc.exchange.news.repository.entity.ArticleEntity;
 import com.hnpc.exchange.redis.configuration.RedisSetting;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -44,7 +43,7 @@ public class NewsSyncTimerService {
     private ArticleCatDao articleCatDao;
     @Autowired
     private NewsSyncManager newsSyncManager;
-    private SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+    private SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @Scheduled(fixedRate = 10000)
     public void syncNews(){
@@ -56,15 +55,24 @@ public class NewsSyncTimerService {
         for(ArticleCatEntity articleCatEntity : articleCatEntityList){
             //查询栏目上次同步时间
             SyncHistory syncHistory=newsSyncManager.find(String.valueOf(articleCatEntity.getId()));
+            String lastUpdateTime= StringUtils.EMPTY;
+            if(syncHistory==null){
+                lastUpdateTime="1979-01-01 00:00:00";
+            }else{
+                lastUpdateTime=simpleDateFormat.format(syncHistory.getLastSyncTime());
+            }
             //查询有新闻变化的栏目
             List<ArticleEntity> articleEntityList=articleDao.queryAllChanged(
-                    String.valueOf(articleCatEntity.getId()),simpleDateFormat.format(syncHistory.getLastSyncTime()));
+                    String.valueOf(articleCatEntity.getId()),
+                            lastUpdateTime);
+
             if(CollectionUtils.isEmpty(articleEntityList)){
                 log.info("栏目号：{}从{}到{}无变化数据",articleCatEntity.getId(),syncHistory.getLastSyncTime(),new Date());
                 continue;
             }
             log.info("栏目号：{}从{}到{}有{}条变化数据",
                     articleCatEntity.getId(),syncHistory.getLastSyncTime(),new Date(),articleEntityList.size());
+            syncHistory.setLastSyncTime(new Date());
             int position=1;
             for(ArticleEntity articleEntity : articleEntityList){
                 News news= null;
@@ -74,9 +82,9 @@ public class NewsSyncTimerService {
                             title(articleEntity.getTitle()).
                             imagePath(articleEntity.getImage_url()).
                             accesscount(articleEntity.getAccess_count()+1).
-                            publishDate(DateUtils.parseDate(articleEntity.getPublish_date(),"yyyy-MM-dd").getTime()).build();
+                            publishDate(articleEntity.getPublish_date().getTime()).build();
 
-                } catch (ParseException e) {
+                } catch (Exception e) {
                    log.error("栏目号：{},新闻编号：{}, publishDate:{} is not valid date format,skip({}) sync to cache",
                            articleCatEntity.getId(),articleEntity.getId(),
                            articleEntity.getPublish_date(),position++);
@@ -89,6 +97,13 @@ public class NewsSyncTimerService {
                 }
                 newsSyncManager.saveCache(news);
             }
+            syncHistory.setSyncTotal(articleEntityList.size()-position+1);
+            try{
+                newsSyncManager.saveSyncHistory(syncHistory);
+            }catch (Exception e){
+                log.error("栏目号：{}缓存同步历史错误", articleCatEntity.getId(),e);
+            }
+
         }
     }
 }

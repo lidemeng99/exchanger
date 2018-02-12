@@ -79,12 +79,35 @@ public class NewsSyncManager {
         String key="SyncHis:"+columnId;
         String value=jsonObjectRedisTemplate.opsForValue().get(key);
         if(StringUtils.isBlank(value)){
-            return new SyncHistory(columnId,new Date(), NumberUtils.INTEGER_ZERO);
+
+            return new SyncHistory(columnId, null, NumberUtils.INTEGER_ZERO);
+
         }
         try {
             return mapper.readValue(value,SyncHistory.class);
         } catch (IOException e) {
             throw new TypeBindErrorParameterException("传入的对象为不合法JSON格式");
         }
+    }
+
+    public  SyncHistory saveSyncHistory(SyncHistory syncHistory){
+        if(syncHistory == null){
+            throw new BlankParameterException("传入参数{}为空",News.class.getName());
+        }
+        if(StringUtils.isBlank(syncHistory.getColumnId())){
+            throw new BlankParameterException("参数中栏目号为空");
+        }
+        String key="SyncHis:"+syncHistory.getColumnId();
+
+        try {
+            String syncHistoryJsonStr=mapper.writeValueAsString(syncHistory);
+            jsonObjectRedisTemplate.opsForValue().set(key,syncHistoryJsonStr);
+            log.info("save key:{} success to cache",key);
+        } catch (JsonProcessingException e) {
+            log.info("save key:{} failure to cache",key);
+            throw new TypeBindErrorParameterException("传入的对象为不合法JSON格式");
+        }
+
+        return syncHistory;
     }
 }

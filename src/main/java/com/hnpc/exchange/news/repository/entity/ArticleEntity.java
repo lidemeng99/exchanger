@@ -10,6 +10,8 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
+
 
 /**
  * exchanger
@@ -43,7 +45,7 @@ public class ArticleEntity {
     private String news_field;
     private String news_topic;
     private int access_count;
-    private String publish_date;
+    private Date publish_date;
     private String status;
     private String valid_date;
     private String valid_day;

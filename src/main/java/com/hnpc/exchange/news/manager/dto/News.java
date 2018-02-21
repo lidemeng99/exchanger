@@ -19,20 +19,20 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class News {
-    private String newsid;
-    private String columnid;
-    private String title;
-    private String author;
-    private long publishDate;
-    private String priority;
-    private String imagePath;
-    private int accesscount;
-    private String source;
-    private String sourceUnit;
-    private String videoThumbnail;
-    private String text;
-    private boolean latest;
-    private String domain;
-    private long lastModifytime;
-    private int flag;
+  private String newsid;
+  private String columnid;
+  private String title;
+  private String author;
+  private long publishDate;
+  private String priority;
+  private String imagePath;
+  private int accesscount;
+  private String source;
+  private String sourceUnit;
+  private String videoThumbnail;
+  private String text;
+  private boolean latest;
+  private String domain;
+  private long lastModifytime;
+  private int flag;
 }

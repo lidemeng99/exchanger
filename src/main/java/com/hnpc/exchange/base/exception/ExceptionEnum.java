@@ -3,6 +3,7 @@ package com.hnpc.exchange.base.exception;
 import com.hnpc.exchange.base.exception.param.BlankParameterException;
 import com.hnpc.exchange.base.exception.param.TypeBindErrorParameterException;
 import com.hnpc.exchange.base.message.model.ResultCode;
+
 import org.springframework.http.HttpStatus;
 
 
@@ -12,12 +13,12 @@ import org.springframework.http.HttpStatus;
  */
 public enum ExceptionEnum {
 
-    /**
-     * 参数为空
-     */
-    PARAMETER_BLANK(BlankParameterException.class,HttpStatus.BAD_REQUEST,ResultCode.PARAM_IS_BLANK),
+  /**
+   * 参数为空
+   */
+  PARAMETER_BLANK(BlankParameterException.class, HttpStatus.BAD_REQUEST, ResultCode.PARAM_IS_BLANK),
 
-    PARAM_TYPE_BIND_ERROR(TypeBindErrorParameterException.class,HttpStatus.BAD_REQUEST,ResultCode.PARAM_TYPE_BIND_ERROR);
+  PARAM_TYPE_BIND_ERROR(TypeBindErrorParameterException.class, HttpStatus.BAD_REQUEST, ResultCode.PARAM_TYPE_BIND_ERROR);
 
 //    /**
 //     * 无效参数
@@ -54,75 +55,75 @@ public enum ExceptionEnum {
 //     */
 //    INTERNAL_SERVER_ERROR(InternalServerException.class, HttpStatus.INTERNAL_SERVER_ERROR, ResultCode.SYSTEM_INNER_ERROR);
 
-    private Class<? extends BusinessException> eClass;
+  private Class<? extends BusinessException> eClass;
 
-    private HttpStatus httpStatus;
+  private HttpStatus httpStatus;
 
-    private ResultCode resultCode;
+  private ResultCode resultCode;
 
-    ExceptionEnum(Class<? extends BusinessException> eClass, HttpStatus httpStatus, ResultCode resultCode) {
-        this.eClass = eClass;
-        this.httpStatus = httpStatus;
-        this.resultCode = resultCode;
+  ExceptionEnum(Class<? extends BusinessException> eClass, HttpStatus httpStatus, ResultCode resultCode) {
+    this.eClass = eClass;
+    this.httpStatus = httpStatus;
+    this.resultCode = resultCode;
+  }
+
+  public Class<? extends BusinessException> getEClass() {
+    return eClass;
+  }
+
+  public HttpStatus getHttpStatus() {
+    return httpStatus;
+  }
+
+  public ResultCode getResultCode() {
+    return resultCode;
+  }
+
+  public static boolean isSupportHttpStatus(int httpStatus) {
+    for (ExceptionEnum exceptionEnum : ExceptionEnum.values()) {
+      if (exceptionEnum.httpStatus.value() == httpStatus) {
+        return true;
+      }
     }
 
-    public Class<? extends BusinessException> getEClass() {
-        return eClass;
+    return false;
+  }
+
+  public static boolean isSupportException(Class<?> z) {
+    for (ExceptionEnum exceptionEnum : ExceptionEnum.values()) {
+      if (exceptionEnum.eClass.equals(z)) {
+        return true;
+      }
     }
 
-    public HttpStatus getHttpStatus() {
-        return httpStatus;
+    return false;
+  }
+
+  public static ExceptionEnum getByHttpStatus(HttpStatus httpStatus) {
+    if (httpStatus == null) {
+      return null;
     }
 
-    public ResultCode getResultCode() {
-        return resultCode;
+    for (ExceptionEnum exceptionEnum : ExceptionEnum.values()) {
+      if (httpStatus.equals(exceptionEnum.httpStatus)) {
+        return exceptionEnum;
+      }
     }
 
-    public static boolean isSupportHttpStatus(int httpStatus) {
-        for (ExceptionEnum exceptionEnum : ExceptionEnum.values()) {
-            if (exceptionEnum.httpStatus.value() == httpStatus) {
-                return true;
-            }
-        }
+    return null;
+  }
 
-        return false;
+  public static ExceptionEnum getByEClass(Class<? extends BusinessException> eClass) {
+    if (eClass == null) {
+      return null;
     }
 
-    public static boolean isSupportException(Class<?> z) {
-        for (ExceptionEnum exceptionEnum : ExceptionEnum.values()) {
-            if (exceptionEnum.eClass.equals(z)) {
-                return true;
-            }
-        }
-
-        return false;
+    for (ExceptionEnum exceptionEnum : ExceptionEnum.values()) {
+      if (eClass.equals(exceptionEnum.eClass)) {
+        return exceptionEnum;
+      }
     }
 
-    public static ExceptionEnum getByHttpStatus(HttpStatus httpStatus) {
-        if (httpStatus == null) {
-            return null;
-        }
-
-        for (ExceptionEnum exceptionEnum : ExceptionEnum.values()) {
-            if (httpStatus.equals(exceptionEnum.httpStatus)) {
-                return exceptionEnum;
-            }
-        }
-
-        return null;
-    }
-
-    public static ExceptionEnum getByEClass(Class<? extends BusinessException> eClass) {
-        if (eClass == null) {
-            return null;
-        }
-
-        for (ExceptionEnum exceptionEnum : ExceptionEnum.values()) {
-            if (eClass.equals(exceptionEnum.eClass)) {
-                return exceptionEnum;
-            }
-        }
-
-        return null;
-    }
+    return null;
+  }
 }

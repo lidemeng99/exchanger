@@ -13,13 +13,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @ConfigurationProperties(prefix = "redis")
 public class RedisSetting {
-    private String keysplitter; //redis key join string
+  private String keysplitter; //redis key join string
 
-    public String getKeysplitter() {
-        return keysplitter;
-    }
+  public String getKeysplitter() {
+    return keysplitter;
+  }
 
-    public void setKeysplitter(String keysplitter) {
-        this.keysplitter = keysplitter;
-    }
+  public void setKeysplitter(String keysplitter) {
+    this.keysplitter = keysplitter;
+  }
 }

@@ -8,9 +8,11 @@
  * exchanger
  * Created by Damon on 29/01/2018.
  */
+
 package com.hnpc.exchange;
 
 import com.hnpc.exchange.redis.configuration.RedisSetting;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -30,9 +32,9 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 //        DataSourceTransactionManagerAutoConfiguration.class,
 //        HibernateJpaAutoConfiguration.class})
 public class Application {
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(Application.class, args);
+  }
 
 }
 

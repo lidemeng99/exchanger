@@ -12,14 +12,14 @@ import com.hnpc.exchange.base.exception.BusinessException;
  * Created by Damon on 08/02/2018.
  */
 public class BlankParameterException extends BusinessException {
-    public BlankParameterException() {
-    }
+  public BlankParameterException() {
+  }
 
-    public BlankParameterException(String message) {
-        super(message);
-    }
+  public BlankParameterException(String message) {
+    super(message);
+  }
 
-    public BlankParameterException(String format, Object... objects) {
-        super(format, objects);
-    }
+  public BlankParameterException(String format, Object... objects) {
+    super(format, objects);
+  }
 }

@@ -12,10 +12,15 @@ import com.hnpc.exchange.base.message.model.ResponseResult;
 import com.hnpc.exchange.news.manager.dto.News;
 import com.hnpc.exchange.redis.configuration.RedisSetting;
 import com.hnpc.exchange.redis.manager.RedisClientManager;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * exchanger
@@ -25,28 +30,28 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/v1.0/cache")
 public class RedisClientTest {
-    @Autowired
-    private RedisClientManager redisClientManager;
+  @Autowired
+  private RedisClientManager redisClientManager;
 
-    @Autowired
-    private RedisSetting redisSetting;
+  @Autowired
+  private RedisSetting redisSetting;
 
-    private ObjectMapper mapper = new ObjectMapper();
+  private ObjectMapper mapper = new ObjectMapper();
 
-    @PostMapping(value = "")
-    public @ResponseBody
-    News addKey(@RequestBody News news) {
-        String key=news.getColumnid()+redisSetting.getKeysplitter()+news.getNewsid();
-        news.setLastModifytime(new Date().getTime());
-        String value= null;
-        try {
-            value = mapper.writeValueAsString(news);
-            redisClientManager.insert(key,value);
-            return news;
-        } catch (JsonProcessingException e) {
-            throw new TypeBindErrorParameterException(e.getCause());
-        }
-
+  @PostMapping(value = "")
+  public @ResponseBody
+  News addKey(@RequestBody News news) {
+    String key = news.getColumnid() + redisSetting.getKeysplitter() + news.getNewsid();
+    news.setLastModifytime(new Date().getTime());
+    String value = null;
+    try {
+      value = mapper.writeValueAsString(news);
+      redisClientManager.insert(key, value);
+      return news;
+    } catch (JsonProcessingException e) {
+      throw new TypeBindErrorParameterException(e.getCause());
     }
+
+  }
 
 }

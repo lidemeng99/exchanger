@@ -12,18 +12,18 @@ import com.hnpc.exchange.base.exception.BusinessException;
  * Created by Damon on 09/02/2018.
  */
 public class TypeBindErrorParameterException extends BusinessException {
-    public TypeBindErrorParameterException() {
-    }
+  public TypeBindErrorParameterException() {
+  }
 
-    public TypeBindErrorParameterException(String message) {
-        super(message);
-    }
+  public TypeBindErrorParameterException(String message) {
+    super(message);
+  }
 
-    public TypeBindErrorParameterException(Throwable cause, Object... objects) {
-        super(cause.getMessage(), cause, new Object[]{});
-    }
+  public TypeBindErrorParameterException(Throwable cause, Object... objects) {
+    super(cause.getMessage(), cause, new Object[]{});
+  }
 
-    public TypeBindErrorParameterException(String msg, Throwable cause, Object... objects) {
-        super(msg, cause, objects);
-    }
+  public TypeBindErrorParameterException(String msg, Throwable cause, Object... objects) {
+    super(msg, cause, objects);
+  }
 }

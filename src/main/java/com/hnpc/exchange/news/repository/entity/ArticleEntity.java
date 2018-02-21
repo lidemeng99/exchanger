@@ -50,6 +50,7 @@ public class ArticleEntity {
     private String valid_date;
     private String valid_day;
     private String reminder_id;
+    private int cat_id;
 
     //private String publishscope;
     //private String source;//来源

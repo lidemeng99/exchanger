@@ -56,14 +56,14 @@ public class NewsSyncTimerService {
             //查询栏目上次同步时间
             SyncHistory syncHistory=newsSyncManager.find(String.valueOf(articleCatEntity.getId()));
             String lastUpdateTime= StringUtils.EMPTY;
-            if(syncHistory==null){
+            if(syncHistory==null || syncHistory.getLastSyncTime()==null){
                 lastUpdateTime="1979-01-01 00:00:00";
             }else{
                 lastUpdateTime=simpleDateFormat.format(syncHistory.getLastSyncTime());
             }
             //查询有新闻变化的栏目
             List<ArticleEntity> articleEntityList=articleDao.queryAllChanged(
-                    String.valueOf(articleCatEntity.getId()),
+                    articleCatEntity.getId(),
                             lastUpdateTime);
 
             if(CollectionUtils.isEmpty(articleEntityList)){

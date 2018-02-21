@@ -3,6 +3,7 @@
  * Copyright 2016 IBM or CNNP.
  * 
  */
+
 package com.hnpc.exchange.news.manager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,16 +39,17 @@ public class NewsQueryManager {
   private ObjectMapper mapper = new ObjectMapper();
 
   /**
-   * query news from cache by column id
+   * query news from cache by column id.
    *
    * @param columnId 栏目号
-   * @return List<News> {@link com.hnpc.exchange.news.manager.dto.News}
+   * @return List {@link com.hnpc.exchange.news.manager.dto.News}
    */
   public List<News> queryFromCacheByColumn(String columnId) {
     if (StringUtils.isBlank(columnId)) {
       throw new BlankParameterException("查询栏目号为空");
     }
-    Set<String> newsJsonStrSet = stringRedisTemplate.keys(columnId + redisSetting.getKeysplitter() + "*");
+    Set<String> newsJsonStrSet = stringRedisTemplate.keys(columnId
+        + redisSetting.getKeysplitter() + "*");
     if (newsJsonStrSet.size() < 1) {
       return ListUtils.EMPTY_LIST;
     }
@@ -57,7 +59,8 @@ public class NewsQueryManager {
         continue;
       }
       try {
-        News news = mapper.readValue(stringRedisTemplate.opsForValue().get(newsJsonStr), News.class);
+        News news = mapper.readValue(stringRedisTemplate.opsForValue()
+            .get(newsJsonStr), News.class);
         newsList.add(news);
       } catch (IOException e) {
         log.error("{} is not JSON format String.", newsJsonStr, e);

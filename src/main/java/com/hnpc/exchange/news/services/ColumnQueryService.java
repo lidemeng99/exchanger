@@ -7,8 +7,8 @@
 package com.hnpc.exchange.news.services;
 
 import com.hnpc.exchange.base.message.model.ResponseResult;
-import com.hnpc.exchange.news.manager.NewsQueryManager;
-import com.hnpc.exchange.news.manager.dto.News;
+import com.hnpc.exchange.news.manager.ColumnQueryManager;
+import com.hnpc.exchange.news.repository.entity.ArticleCatEntity;
 
 import java.util.List;
 
@@ -21,20 +21,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * exchanger
- * Created by Damon on 09/02/2018.
+ * Created by Damon on 21/02/2018.
  */
 @ResponseResult
 @RestController
-@RequestMapping("/api/v1.0/news")
-public class NewsQueryService {
+@RequestMapping("/api/v1.0/column")
+public class ColumnQueryService {
   @Autowired
-  private NewsQueryManager newsQueryManager;
+  private ColumnQueryManager columnQueryManager;
 
   @GetMapping
   public @ResponseBody
-  List<News> queryCacheNewsByColumnId(@RequestParam("column_id") String columnId) {
-    return newsQueryManager.queryFromCacheByColumn(columnId);
+  List<ArticleCatEntity> queryAllAvailableColumns() {
+    return columnQueryManager.findAllAvailableColumns();
   }
 
-
+  @GetMapping("/subscribed")
+  public @ResponseBody
+  List<ArticleCatEntity> querySubscribedColumns(@RequestParam(name = "subscriber") String userid) {
+    return columnQueryManager.findSubscribedColumns(userid);
+  }
 }

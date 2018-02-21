@@ -18,9 +18,10 @@ import org.springframework.data.repository.CrudRepository;
  * exchanger
  * Created by Damon on 10/02/2018.
  */
-public interface ArticleCatDao extends CrudRepository<ArticleCatEntity, String>,
+public interface ArticleCatDao extends CrudRepository<ArticleCatEntity, Integer>,
     JpaSpecificationExecutor<ArticleCatEntity> {
 
   @Query("SELECT articlecat FROM ArticleCatEntity articlecat WHERE articlecat.status=2")
   List<ArticleCatEntity> queryAvailableColumns();
+
 }

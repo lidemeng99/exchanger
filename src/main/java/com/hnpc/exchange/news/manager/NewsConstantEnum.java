@@ -5,23 +5,24 @@ package com.hnpc.exchange.news.manager;
  * Created by Damon on 09/02/2018.
  */
 public enum NewsConstantEnum {
-  NEWS_FLAG_CREATE(1),
-  NEWS_FLAG_UPDATE(2),
-  NEWS_FLAG_DELETE(-1);
+  NEWS_FLAG_CREATE("1"),
+  NEWS_FLAG_UPDATE("2"),
+  NEWS_FLAG_DELETE("-1"),
+  NEWS_FLAG_MAIN_ATTACHMENT("主附件");
 
-  private Integer code;
+  private String code;
 
 
-  NewsConstantEnum(Integer code) {
+  NewsConstantEnum(String code) {
     this.code = code;
   }
 
-  public Integer code() {
+  public String code() {
     return this.code;
   }
 
 
-  public static Integer getCode(String name) {
+  public static String getCode(String name) {
     for (NewsConstantEnum item : NewsConstantEnum.values()) {
       if (item.name().equals(name)) {
         return item.code;

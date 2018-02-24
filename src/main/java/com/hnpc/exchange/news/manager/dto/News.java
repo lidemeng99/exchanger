@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 public class News {
-  private String newsid;
-  private String columnid;
+  private int newsid;
+  private int columnid;
   private String title;
   private String author;
   private long publishDate;
@@ -34,5 +34,5 @@ public class News {
   private boolean latest;
   private String domain;
   private long lastModifytime;
-  private int flag;
+  private String flag;
 }

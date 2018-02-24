@@ -11,6 +11,7 @@
 
 package com.hnpc.exchange;
 
+import com.hnpc.exchange.base.configuration.SystemFormatSetting;
 import com.hnpc.exchange.redis.configuration.RedisSetting;
 
 import org.springframework.boot.SpringApplication;
@@ -26,7 +27,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableAutoConfiguration
 @EnableCaching
 @EnableScheduling
-@EnableConfigurationProperties({RedisSetting.class})
+@EnableConfigurationProperties({RedisSetting.class, SystemFormatSetting.class})
 //@SpringBootApplication(exclude = {
 //        DataSourceAutoConfiguration.class,
 //        DataSourceTransactionManagerAutoConfiguration.class,
